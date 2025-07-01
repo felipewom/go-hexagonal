@@ -1,11 +1,22 @@
 package arithmetic
 
-// Arith impliments the Arithmetic interface
+import (
+	"errors" // Import for errors.New
+	"github.com/felipewom/go-hexagonal/internal/application/api"
+)
+
+// Arith implements the api.Arithmetic interface
 type Arith struct {
 }
 
-// NewArith creates a new Arith
-func New() *Arith {
+// Compile-time check to ensure Arith implements the api.Arithmetic interface.
+var _ api.Arithmetic = (*Arith)(nil)
+
+// ErrDivisionByZero is returned when a division by zero is attempted.
+var ErrDivisionByZero = errors.New("division by zero")
+
+// New creates a new Arith instance satisfying the api.Arithmetic interface.
+func New() api.Arithmetic {
 	return &Arith{}
 }
 
@@ -26,5 +37,8 @@ func (arith Arith) Multiplication(a int32, b int32) (int32, error) {
 
 // Division gets the result of dividing parameters a and b
 func (arith Arith) Division(a int32, b int32) (int32, error) {
+	if b == 0 {
+		return 0, ErrDivisionByZero
+	}
 	return a / b, nil
 }

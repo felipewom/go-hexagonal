@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/felipewom/go-hexagonal/internal/adapters/framework/left/grpc/pb";
+
+// It's good practice to ensure the import path matches the actual location
+// of messages.proto relative to the root of the proto path used by protoc.
+// Assuming protoc will be run from a directory where `internal/...` is accessible,
+// or that `internal/adapters/framework/left/grpc/proto` is an import path.
+// For simplicity with common protoc usage, often paths are relative from a common root.
+// If protoc is run from the project root, and `-I.` is used, this path should be:
+// import "internal/adapters/framework/left/grpc/proto/messages.proto";
+// However, the original generated files had `Metadata: "arithmetic_svc.proto"` and "number_msg.proto"
+// suggesting they might have been co-located or in simpler paths.
+// Given the go_package option, the generated code will be fine.
+// The key is that protoc can find this import.
+// For now, let's assume a simple import name if they are in the same proto processing path.
+// If this causes issues during generation, we might need to adjust the import path or protoc command.
+
+import "internal/adapters/framework/left/grpc/proto/messages.proto";
+
+service ArithmeticService {
+  rpc GetAddition(OperationParameters) returns (Answer);
+  rpc GetSubtraction(OperationParameters) returns (Answer);
+  rpc GetMultiplication(OperationParameters) returns (Answer);
+  rpc GetDivision(OperationParameters) returns (Answer);
+}
